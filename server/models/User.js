@@ -36,21 +36,7 @@ const UserSchema = new Schema({
       ref: 'User',
       default: []
     },
-  ],
-  sentRequests: [
-    {
-      type: mongoose.Types.ObjectId,
-      ref: 'User',
-      default: []
-    },
-  ],
-  receivedRequests: [
-    {
-      type: mongoose.Types.ObjectId,
-      ref: 'User',
-      default: []
-    },
-  ]
+  ],  
 }, {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
@@ -83,6 +69,8 @@ UserSchema.methods.comparePassword = async function (password) {
 UserSchema.pre('remove', async function (next) {
   await this.model('Comment').deleteMany({ creator: this._id })
   await this.model('Like').deleteMany({ creator: this._id })
+  await this.mode('Post').deleteMany({ creator: this._id })
+  await this.model('FriendRequest').deleteMany({ $or: [{creator: this._id}, {invitee: this._id }]})
   next()
 })
   
@@ -104,6 +92,20 @@ UserSchema.virtual('likes', {
   ref: 'Like',
   localField: '_id',
   foreignField: 'creator',
+  justOne: false
+})
+
+UserSchema.virtual('sentrequests', {
+  ref: 'FriendRequest',
+  localField: '_id',
+  foreignField: 'creator',
+  justOne: false
+})
+
+UserSchema.virtual('receivedrequests', {
+  ref: 'FriendRequest',
+  localField: '_id',
+  foreignField: 'invitee',
   justOne: false
 })
 

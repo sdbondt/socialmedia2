@@ -1,5 +1,6 @@
 require("dotenv").config()
 const Comment = require("../models/Comment")
+const FriendRequest = require("../models/FriendRequest")
 const Like = require("../models/Like")
 const Post = require("../models/Post")
 const User = require('../models/User')
@@ -12,6 +13,8 @@ const resetDb = async () => {
       await Post.deleteMany({})
       await Comment.deleteMany({})
       await Like.deleteMany({})
+      await FriendRequest.deleteMany({})
+      console.log('Data got deleted.')
     } catch (e) {
         console.log(e)
     }

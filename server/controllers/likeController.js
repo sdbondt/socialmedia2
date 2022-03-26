@@ -27,15 +27,14 @@ exports.like = asyncHandler(async (req, res) => {
         res.status(StatusCodes.CREATED).json({
             data: {
                 like: newLike,
-                msg: 'add'
+                
             }
         })
     } else {
-        const removeLike = await Like.findOneAndDelete({ creator: req.user._id, post: postId })
+        await Like.findOneAndDelete({ creator: req.user._id, post: postId })
         res.status(StatusCodes.OK).json({
             data: {
                 like,
-                msg: 'deleted'
             }
         })
     }
