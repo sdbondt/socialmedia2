@@ -11,4 +11,4 @@ router.post('/:userId/cancelrequest', cancelRequest)
 router.post('/:userId/deletefriend', deleteFriend)
 router.get('/', getUsers)
 
-module.exports = rou
+module.exports = router
